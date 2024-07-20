@@ -1,4 +1,5 @@
 from flask import Flask, jsonify
+from flask_cors import CORS
 import threading
 import time
 import socket
@@ -6,16 +7,18 @@ import socket
 from capture import *
 
 app = Flask(__name__)
+CORS(app)
 
 packets = []
 capture_thread = None
 capture_running = False
 
+sock = socket.socket(socket.AF_PACKET, socket.SOCK_RAW, socket.ntohs(3))
+sock.setblocking(False)
 
-def capture_packets():
+def capture_packets(sock: socket.socket):
     global capture_running
-    sock = socket.socket(socket.AF_PACKET, socket.SOCK_RAW, socket.ntohs(3))
-    sock.setblocking(False)
+    
     while capture_running:
         try:
             raw_data, _ = sock.recvfrom(65535)
@@ -80,7 +83,7 @@ def start_capture():
     global capture_running, capture_thread
     if not capture_running:
         capture_running = True
-        capture_thread = threading.Thread(target=capture_packets, daemon=True)
+        capture_thread = threading.Thread(target=capture_packets, args=(sock,))
         capture_thread.start()
         return jsonify({"status": "Packet capture started"})
     return jsonify({"status": "Packet capture already running"})
@@ -101,4 +104,4 @@ def get_packets():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, port=8080)

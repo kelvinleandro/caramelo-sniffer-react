@@ -1,11 +1,14 @@
 import type { Metadata } from "next";
-import { Roboto } from "next/font/google";
+import { Fira_Sans } from "next/font/google";
+
 import "./globals.css";
 
-const roboto = Roboto({
+import { ThemeProvider } from "@/components/theme-provider";
+
+const font = Fira_Sans({
   subsets: ["latin"],
   weight: ["400", "500", "700"],
-  variable: "--font-roboto",
+  variable: "--font-sans",
 });
 
 export const metadata: Metadata = {
@@ -19,7 +22,16 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={roboto.className}>{children}</body>
+      <body
+        className={font.className}
+      >
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="dark"
+        >
+          {children}
+        </ThemeProvider>
+      </body>
     </html>
   );
 }
