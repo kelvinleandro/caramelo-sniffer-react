@@ -18,12 +18,12 @@ export default function Home() {
   };
 
   const startCapture = async () => {
-    const response = await fetch("localhost:8080/start_capture");
+    const response = await fetch("http://localhost:8080/start_capture");
     // const data = await response.json();
   };
 
   const stopCapture = async () => {
-    const response = await fetch("localhost:8080/stop_capture");
+    const response = await fetch("http://localhost:8080/stop_capture");
     // const data = await response.json();
   };
 
@@ -39,7 +39,7 @@ export default function Home() {
 
   useEffect(() => {
     const fetchPackets = async () => {
-      const response = await fetch("localhost:8080/packets");
+      const response = await fetch("http://localhost:8080/packets");
       const data = await response.json();
       setPackets(data.packets);
     };

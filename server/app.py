@@ -9,6 +9,8 @@ from capture import *
 app = Flask(__name__)
 CORS(app)
 
+packet_lock = threading.Lock()
+
 packets = []
 capture_thread = None
 capture_running = False
@@ -73,7 +75,9 @@ def capture_packets(sock: socket.socket):
                     "length": len(raw_data),
                     "rest": rest
                 }
-                packets.append(packet_info)
+                # packets.append(packet_info)
+                with packet_lock:
+                    packets.append(packet_info)
         except BlockingIOError:
             pass  # No packets to read, move on
 
@@ -100,7 +104,8 @@ def stop_capture():
 
 @app.route('/packets')
 def get_packets():
-    return jsonify({"packets": packets})
+    with packet_lock:
+        return jsonify({"packets": packets})
 
 
 if __name__ == '__main__':
