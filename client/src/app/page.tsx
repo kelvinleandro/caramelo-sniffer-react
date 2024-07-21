@@ -72,6 +72,18 @@ const PACKETS_DATA: Packet[] = [
       payload: new Uint8Array(),
     },
   },
+  {
+    number: 6,
+    timestamp: 0,
+    t_captured: 0,
+    mac_src: "00:00:00:00:00:00",
+    mac_dst: "00:00:00:00:00:00",
+    transport_protocol: "ICMP",
+    length: 12,
+    rest: {
+      payload: new Uint8Array(),
+    },
+  },
 ];
 
 export default function Home() {

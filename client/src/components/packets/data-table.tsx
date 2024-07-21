@@ -28,15 +28,18 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "../ui/button";
+import { Packet } from "@/types/packets";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  onRowClick?: (packet: Packet) => void;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
+  onRowClick,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -69,20 +72,6 @@ export function DataTable<TData, TValue>({
     new Set(data.map((item: any) => item.transport_protocol))
   );
 
-  // const handleCheckboxChange = (value: string) => {
-  //   const currentFilters = columnFilters.filter(
-  //     (filter) => filter.id !== "transport_protocol"
-  //   );
-  //   if (currentFilters.some((filter) => filter.value === value)) {
-  //     setColumnFilters(currentFilters);
-  //   } else {
-  //     setColumnFilters([
-  //       ...currentFilters,
-  //       { id: "transport_protocol", value },
-  //     ]);
-  //   }
-  // };
-
   const handleCheckboxChange = (value: string) => {
     setColumnFilters((prevFilters) => {
       const existingFilter = prevFilters.find(
@@ -113,6 +102,12 @@ export function DataTable<TData, TValue>({
         return [...prevFilters, { id: "transport_protocol", value: [value] }];
       }
     });
+  };
+
+  const transportProtocolColors: Record<string, string> = {
+    TCP: "text-blue-500 hover:bg-blue-500 hover:text-current cursor-pointer",
+    UDP: "text-green-500 hover:bg-green-500 hover:text-current cursor-pointer",
+    ICMP: "text-red-500 hover:bg-red-500 hover:text-current cursor-pointer",
   };
 
   return (
@@ -166,6 +161,10 @@ export function DataTable<TData, TValue>({
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
+                  className={
+                    transportProtocolColors[(row.original as Packet).transport_protocol] ||
+                    "cursor-pointer hover:bg-gray-950 hover:dark:bg-white hover:text-white hover:dark:text-gray-950"
+                  }
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>
