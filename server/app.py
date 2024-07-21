@@ -46,24 +46,24 @@ def capture_packets(sock: socket.socket):
                         transport_protocol = "ICMP"
                         icmp_type, icmp_code, checksum, transport_data = icmp_packet(ip_data)
                         rest.update({"icmp_type": icmp_type, "icmp_code": icmp_code, "checksum": checksum,
-                                     "payload": transport_data})
+                                     "payload": list(transport_data)})
                     elif protocol == 6:
                         transport_protocol = "TCP"
                         src_port, dst_port, sequence_number, acknowledgment_number, flags, transport_data = tcp_segment(
                             ip_data)
                         rest.update({"port_src": src_port, "port_dst": dst_port, "sequence_number": sequence_number,
                                      "acknowledgment_number": acknowledgment_number, "flags": flags,
-                                     "payload": transport_data})
+                                     "payload": list(transport_data)})
                     elif protocol == 17:
                         transport_protocol = "UDP"
                         src_port, dst_port, length, transport_data = udp_segment(ip_data)
                         rest.update(
-                            {"port_src": src_port, "port_dst": dst_port, "length": length, "payload": transport_data})
+                            {"port_src": src_port, "port_dst": dst_port, "length": length, "payload": list(transport_data)})
                     else:
                         transport_protocol = f"{protocol}"
-                        rest.update({"payload": ip_data})
+                        rest.update({"payload": list(ip_data)})
                 else:
-                    rest.update({"payload": eth_data})
+                    rest.update({"payload": list(eth_data)})
 
                 packet_info = {
                     "number": len(packets) + 1,
@@ -75,7 +75,6 @@ def capture_packets(sock: socket.socket):
                     "length": len(raw_data),
                     "rest": rest
                 }
-                # packets.append(packet_info)
                 with packet_lock:
                     packets.append(packet_info)
         except BlockingIOError:
