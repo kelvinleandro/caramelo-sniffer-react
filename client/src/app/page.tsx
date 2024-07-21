@@ -89,6 +89,7 @@ const PACKETS_DATA: Packet[] = [
 export default function Home() {
   const { setTheme, theme } = useTheme();
   const [packets, setPackets] = useState<Packet[]>([]);
+  const [activePacket, setActivePacket] = useState<Packet | null>(null);
   const [isCapturing, setIsCapturing] = useState(false);
 
   const handleToggleTheme = () => {
@@ -112,7 +113,7 @@ export default function Home() {
     // } else {
     //   await startCapture();
     // }
-  }
+  };
 
   // useEffect(() => {
   //   const fetchPackets = async () => {
@@ -134,7 +135,10 @@ export default function Home() {
       <div className="flex flex-row justify-between items-center border rounded-md px-4 py-2">
         <div className="flex items-center space-x-2">
           <p className="text-lg">OFF</p>
-          <Switch checked={isCapturing} onCheckedChange={value => handleCaptureChange(value)} />
+          <Switch
+            checked={isCapturing}
+            onCheckedChange={(value) => handleCaptureChange(value)}
+          />
           <p className="text-lg">ON</p>
         </div>
         <p className="text-lg">Packets Captured: {packets.length}</p>
@@ -150,8 +154,10 @@ export default function Home() {
       </div>
 
       <div className="flex flex-col md:flex-row gap-4">
-        <div className="w-full md:w-[70%]"><DataTable columns={columns} data={PACKETS_DATA} /></div>
-        <PacketDetails />
+        <div className="w-full md:w-[70%]">
+          <DataTable columns={columns} data={PACKETS_DATA} onRowClick={setActivePacket} />
+        </div>
+        <PacketDetails packet={activePacket} />
       </div>
     </div>
   );

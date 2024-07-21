@@ -33,7 +33,7 @@ import { Packet } from "@/types/packets";
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
-  onRowClick?: (packet: Packet) => void;
+  onRowClick: (packet: Packet) => void;
 }
 
 export function DataTable<TData, TValue>({
@@ -165,6 +165,7 @@ export function DataTable<TData, TValue>({
                     transportProtocolColors[(row.original as Packet).transport_protocol] ||
                     "cursor-pointer hover:bg-gray-950 hover:dark:bg-white hover:text-white hover:dark:text-gray-950"
                   }
+                  onClick={() => onRowClick(row.original as Packet)}
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>
