@@ -59,7 +59,7 @@ type UDPSegment = {
   data: Uint8Array;
 };
 
-type Rest = 
+type Rest =
   | IPv4Packet
   | IPv6Packet
   | ICMPPacket
@@ -67,7 +67,7 @@ type Rest =
   | UDPSegment
   | { payload: Uint8Array };
 
-type Packet = {
+export type Packet = {
   number: number;
   timestamp: number;
   t_captured: number;
@@ -76,4 +76,4 @@ type Packet = {
   transport_protocol: string;
   length: number;
   rest: Rest;
-}
+};

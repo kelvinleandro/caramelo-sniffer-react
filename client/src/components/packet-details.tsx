@@ -3,7 +3,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 const PacketDetails = () => {
 
   return (
-    <section className="flex flex-col gap-2 px-4 py-2 border rounded-md w-[30%]">
+    <section className="flex flex-col gap-2 px-4 py-2 border rounded-md w-full md:w-[30%]">
       <Tabs defaultValue="network">
         <TabsList className="grid w-full grid-cols-3">
           <TabsTrigger value="network">Network</TabsTrigger>
