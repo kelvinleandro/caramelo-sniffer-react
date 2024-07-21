@@ -84,6 +84,66 @@ const PACKETS_DATA: Packet[] = [
       payload: new Uint8Array(),
     },
   },
+  {
+    number: 7,
+    timestamp: 0,
+    t_captured: 0,
+    mac_src: "00:00:00:00:00:00",
+    mac_dst: "00:00:00:00:00:00",
+    transport_protocol: "unknown",
+    length: 12,
+    rest: {
+      payload: new Uint8Array(),
+    },
+  },
+  {
+    number: 8,
+    timestamp: 0,
+    t_captured: 0,
+    mac_src: "00:00:00:00:00:00",
+    mac_dst: "00:00:00:00:00:00",
+    transport_protocol: "UDP",
+    length: 12,
+    rest: {
+      payload: new Uint8Array(),
+    },
+  },
+  {
+    number: 9,
+    timestamp: 0,
+    t_captured: 0,
+    mac_src: "00:00:00:00:00:00",
+    mac_dst: "00:00:00:00:00:00",
+    transport_protocol: "TCP",
+    length: 12,
+    rest: {
+      payload: new Uint8Array(),
+    },
+  },
+  {
+    number: 10,
+    timestamp: 0,
+    t_captured: 0,
+    mac_src: "00:00:00:00:00:00",
+    mac_dst: "00:00:00:00:00:00",
+    transport_protocol: "TCP",
+    length: 12,
+    rest: {
+      payload: new Uint8Array(),
+    },
+  },
+  {
+    number: 11,
+    timestamp: 0,
+    t_captured: 0,
+    mac_src: "00:00:00:00:00:00",
+    mac_dst: "00:00:00:00:00:00",
+    transport_protocol: "ICMP",
+    length: 12,
+    rest: {
+      payload: new Uint8Array(),
+    },
+  },
 ];
 
 export default function Home() {
@@ -130,7 +190,7 @@ export default function Home() {
   return (
     <div className="flex flex-col w-full min-h-screen py-6 px-8 gap-4">
       <h1 className="text-center uppercase text-3xl font-bold">
-        Caramelo Sniffer 🐶
+        Caramelo Sniffer
       </h1>
       <div className="flex flex-row justify-between items-center border rounded-md px-4 py-2">
         <div className="flex items-center space-x-2">

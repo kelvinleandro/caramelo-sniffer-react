@@ -10,6 +10,7 @@ import {
   getCoreRowModel,
   getFilteredRowModel,
   getSortedRowModel,
+  getPaginationRowModel,
   useReactTable,
 } from "@tanstack/react-table";
 
@@ -51,6 +52,7 @@ export function DataTable<TData, TValue>({
     onSortingChange: setSorting,
     getSortedRowModel: getSortedRowModel(),
     onColumnFiltersChange: setColumnFilters,
+    // getPaginationRowModel: getPaginationRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     state: {
       sorting,
@@ -66,6 +68,14 @@ export function DataTable<TData, TValue>({
         return filterValue.includes(row.getValue(columnId));
       },
     },
+    // manualPagination: true,
+    // pageCount: 1,
+    // rowCount: 5,
+    // initialState: {
+    //   pagination: {
+    //     pageSize: 5,
+    //   },
+    // },
   });
 
   const transportProtocolValues = Array.from(
@@ -135,7 +145,7 @@ export function DataTable<TData, TValue>({
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-      <div className="rounded-md border">
+      <div className="rounded-md border overflow-y-auto max-h-[50vh] scrollbar">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -162,7 +172,9 @@ export function DataTable<TData, TValue>({
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
                   className={
-                    transportProtocolColors[(row.original as Packet).transport_protocol] ||
+                    transportProtocolColors[
+                      (row.original as Packet).transport_protocol
+                    ] ||
                     "cursor-pointer hover:bg-gray-950 hover:dark:bg-white hover:text-white hover:dark:text-gray-950"
                   }
                   onClick={() => onRowClick(row.original as Packet)}
