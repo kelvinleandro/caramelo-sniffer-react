@@ -1,5 +1,6 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Packet } from "@/types/packets";
+import PayloadDisplay from "./payload-display";
 
 const PacketDetails = ({ packet }: { packet: Packet | null }) => {
   const rest = packet?.rest;
@@ -16,40 +17,130 @@ const PacketDetails = ({ packet }: { packet: Packet | null }) => {
           {rest && rest.ip_version ? (
             rest.ip_version === 4 ? (
               <>
-                <div>IP version: {rest.ip_version}</div>
-                <div>Header Length: {rest.ip_header_length}</div>
-                <div>TTL: {rest.ip_ttl}</div>
-                <div>IP Source: {rest.ip_src}</div>
-                <div>IP Destination: {rest.ip_dst}</div>
+                <p>
+                  <span className="font-bold">IP version:</span>{" "}
+                  {rest.ip_version}
+                </p>
+                <p>
+                  <span className="font-bold">Header Length:</span>{" "}
+                  {rest.ip_header_length}
+                </p>
+                <p>
+                  <span className="font-bold">TTL:</span> {rest.ip_ttl}
+                </p>
+                <p>
+                  <span className="font-bold">IP Source:</span> {rest.ip_src}
+                </p>
+                <p>
+                  <span className="font-bold">IP Destination:</span>{" "}
+                  {rest.ip_dst}
+                </p>
               </>
             ) : rest.ip_version === 6 ? (
               <>
-                <div>IP version: {rest.ip_version}</div>
-                <div>Traffic Class: {rest.ip_traffic_class}</div>
-                <div>Flow Label: {rest.ip_flow_label}</div>
-                <div>Payload Length: {rest.ip_payload_length}</div>
-                <div>IP Source: {rest.ip_src}</div>
-                <div>IP Destination: {rest.ip_dst}</div>
+                <p>
+                  <span className="font-bold">IP version:</span>{" "}
+                  {rest.ip_version}
+                </p>
+                <p>
+                  <span className="font-bold">Traffic Class:</span>{" "}
+                  {rest.ip_traffic_class}
+                </p>
+                <p>
+                  <span className="font-bold">Flow Label:</span>{" "}
+                  {rest.ip_flow_label}
+                </p>
+                <p>
+                  <span className="font-bold">Payload Length:</span>{" "}
+                  {rest.ip_payload_length}
+                </p>
+                <p>
+                  <span className="font-bold">IP Source:</span> {rest.ip_src}
+                </p>
+                <p>
+                  <span className="font-bold">IP Destination:</span>{" "}
+                  {rest.ip_dst}
+                </p>
               </>
             ) : (
-              <p>Network content unavailable</p>
+              <p>No information available</p>
             )
           ) : (
-            <p>Network content unavailable</p>
+            <p>No information available</p>
           )}
         </TabsContent>
         <TabsContent value="transport">
-          {packet ? (
-            <p>transport: {packet.number}</p>
+          {rest ? (
+            packet.transport_protocol === "UDP" ? (
+              <>
+                <p>
+                  <span className="font-bold">Protocol:</span>{" "}
+                  {packet.transport_protocol}
+                </p>
+                <p>
+                  <span className="font-bold">Port Source:</span>{" "}
+                  {rest.port_src}
+                </p>
+                <p>
+                  <span className="font-bold">Port Destination:</span>{" "}
+                  {rest.port_dst}
+                </p>
+                <p>
+                  <span className="font-bold">Length:</span> {rest.udp_length}
+                </p>
+              </>
+            ) : packet.transport_protocol === "TCP" ? (
+              <>
+                <p>
+                  <span className="font-bold">Protocol:</span>{" "}
+                  {packet.transport_protocol}
+                </p>
+                <p>
+                  <span className="font-bold">Port Source:</span>{" "}
+                  {rest.port_src}
+                </p>
+                <p>
+                  <span className="font-bold">Port Destination:</span>{" "}
+                  {rest.port_dst}
+                </p>
+                <p>
+                  <span className="font-bold">Sequence Number:</span>{" "}
+                  {rest.sequence_number}
+                </p>
+                <p>
+                  <span className="font-bold">Acknowledgment Number:</span>{" "}
+                  {rest.acknowledgment_number}
+                </p>
+              </>
+            ) : packet.transport_protocol === "ICMP" ? (
+              <>
+                <p>
+                  <span className="font-bold">Protocol:</span>{" "}
+                  {packet.transport_protocol}
+                </p>
+                <p>
+                  <span className="font-bold">ICMP Type:</span> {rest.icmp_type}
+                </p>
+                <p>
+                  <span className="font-bold">ICMP Code:</span> {rest.icmp_code}
+                </p>
+                <p>
+                  <span className="font-bold">Checksum:</span>{" "}
+                  {rest.icmp_checksum}
+                </p>
+              </>
+            ) : (
+              <p>No information available</p>
+            )
           ) : (
-            <p>Transport content unavailable</p>
+            <p>No information available</p>
           )}
         </TabsContent>
         <TabsContent value="payload">
-          {packet ? (
-            <p>payload: {packet.number}</p>
+          {packet && rest ? (
+            <PayloadDisplay payload={rest.payload} />
           ) : (
-            <p>Payload content unavailable</p>
+            <p>No information available</p>
           )}
         </TabsContent>
       </Tabs>

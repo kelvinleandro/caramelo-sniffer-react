@@ -45,7 +45,7 @@ def capture_packets(sock: socket.socket):
                     if protocol == 1:
                         transport_protocol = "ICMP"
                         icmp_type, icmp_code, checksum, transport_data = icmp_packet(ip_data)
-                        rest.update({"icmp_type": icmp_type, "icmp_code": icmp_code, "checksum": checksum,
+                        rest.update({"icmp_type": icmp_type, "icmp_code": icmp_code, "icmp_checksum": checksum,
                                      "payload": list(transport_data)})
                     elif protocol == 6:
                         transport_protocol = "TCP"
@@ -58,7 +58,7 @@ def capture_packets(sock: socket.socket):
                         transport_protocol = "UDP"
                         src_port, dst_port, length, transport_data = udp_segment(ip_data)
                         rest.update(
-                            {"port_src": src_port, "port_dst": dst_port, "length": length, "payload": list(transport_data)})
+                            {"port_src": src_port, "port_dst": dst_port, "udp_length": length, "payload": list(transport_data)})
                     else:
                         transport_protocol = f"{protocol}"
                         rest.update({"payload": list(ip_data)})

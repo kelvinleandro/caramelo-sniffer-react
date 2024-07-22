@@ -28,9 +28,9 @@ export type IPv6Packet = {
 };
 
 export type ICMPPacket = {
-  type: number;
-  code: number;
-  checksum: number;
+  icmp_type: number;
+  icmp_code: number;
+  icmp_checksum: number;
   // data: Uint8Array;
 };
 
@@ -55,7 +55,7 @@ export type TCPSegment = {
 export type UDPSegment = {
   port_src: number;
   port_dst: number;
-  length: number;
+  udp_length: number;
   // data: Uint8Array;
 };
 

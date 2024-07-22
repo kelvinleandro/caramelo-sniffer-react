@@ -30,6 +30,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "../ui/button";
 import { Packet } from "@/types/packets";
+import { cn } from "@/lib/utils";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -84,9 +85,9 @@ export function DataTable<TData, TValue>({
   };
 
   const activeRowStyle: Record<string, string> = {
-    TCP: "bg-blue-500",
-    UDP: "bg-green-500",
-    ICMP: "bg-red-500",
+    TCP: "bg-blue-500 text-current",
+    UDP: "bg-green-500 text-current",
+    ICMP: "bg-red-500 text-current",
   };
 
   const rowStyle: Record<string, string> = {
@@ -142,14 +143,15 @@ export function DataTable<TData, TValue>({
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
-                  className={`${
-                    (row.original as Packet).number === activePacketNumber
-                      ? activeRowStyle[(row.original as Packet).transport_protocol] || "bg-gray-950 dark:bg-white text-white dark:text-gray-950"
-                      : rowStyle[
-                          (row.original as Packet).transport_protocol
-                        ] ||
-                        "cursor-pointer hover:bg-gray-950 hover:dark:bg-white hover:text-white hover:dark:text-gray-950"
-                  }`}
+                  className={cn(
+                    rowStyle[(row.original as Packet).transport_protocol] ??
+                      "cursor-pointer hover:bg-gray-950 hover:dark:bg-white hover:text-white hover:dark:text-gray-950",
+                    (row.original as Packet).number === activePacketNumber &&
+                      (activeRowStyle[
+                        (row.original as Packet).transport_protocol
+                      ] ??
+                        "bg-gray-950 dark:bg-white text-white dark:text-gray-950")
+                  )}
                   onClick={() => handleRowClick(row)}
                 >
                   {row.getVisibleCells().map((cell) => (
