@@ -2,36 +2,36 @@ type EthernetFrame = {
   mac_dst: string;
   mac_src: string;
   eth_proto: number;
-  eth_data: Uint8Array;
+  // eth_data: Uint8Array;
 };
 
-type IPv4Packet = {
-  version: number;
-  header_length: number;
-  ttl: number;
-  protocol: number;
+export type IPv4Packet = {
+  ip_version: number;
+  ip_header_length: number;
+  ip_ttl: number;
+  // protocol: number;
   ip_src: string;
   ip_dst: string;
-  ip_data: Uint8Array;
+  // ip_data: Uint8Array;
 };
 
-type IPv6Packet = {
-  version: number;
-  traffic_class: number;
-  flow_label: number;
-  payload_length: number;
-  protocol: number;
-  hop_limit: number;
+export type IPv6Packet = {
+  ip_version: number;
+  ip_traffic_class: number;
+  ip_flow_label: number;
+  ip_payload_length: number;
+  // protocol: number;
+  ip_hop_limit: number;
   ip_src: string;
   ip_dst: string;
-  ip_data: Uint8Array;
+  // ip_data: Uint8Array;
 };
 
-type ICMPPacket = {
+export type ICMPPacket = {
   type: number;
   code: number;
   checksum: number;
-  data: Uint8Array;
+  // data: Uint8Array;
 };
 
 type TCPFlags = {
@@ -43,29 +43,25 @@ type TCPFlags = {
   FIN: boolean;
 };
 
-type TCPSegment = {
-  src_port: number;
-  dst_port: number;
+export type TCPSegment = {
+  port_src: number;
+  port_dst: number;
   sequence_number: number;
   acknowledgment_number: number;
   flags: TCPFlags;
-  data: Uint8Array;
+  // data: Uint8Array;
 };
 
-type UDPSegment = {
-  src_port: number;
-  dst_port: number;
+export type UDPSegment = {
+  port_src: number;
+  port_dst: number;
   length: number;
-  data: Uint8Array;
+  // data: Uint8Array;
 };
 
-type Rest =
-  | IPv4Packet
-  | IPv6Packet
-  | ICMPPacket
-  | TCPSegment
-  | UDPSegment
-  | { payload: Uint8Array };
+export type Rest = Partial<IPv4Packet> & Partial<IPv6Packet> & Partial<ICMPPacket> & Partial<TCPSegment> & Partial<UDPSegment> & {
+  payload: Uint8Array;
+}
 
 export type Packet = {
   number: number;

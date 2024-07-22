@@ -22,6 +22,18 @@ const PACKETS_DATA: Packet[] = [
     length: 12,
     rest: {
       payload: new Uint8Array(),
+      // ipv6 info
+      ip_version: 6,
+      ip_traffic_class: 0,
+      ip_flow_label: 0,
+      ip_payload_length: 0,
+      ip_hop_limit: 0,
+      ip_src: "866c:cf9d:2994:cd3b:55da:97e3:a5b4:a39b",
+      ip_dst: "866c:cf9d:2994:cd3b:55da:97e3:a5b4:a39b",
+      // udp info
+      port_src: 0,
+      port_dst: 0,
+      length: 0,
     },
   },
   {
@@ -34,6 +46,16 @@ const PACKETS_DATA: Packet[] = [
     length: 12,
     rest: {
       payload: new Uint8Array(),
+      // ipv4 info
+      ip_version: 4,
+      ip_header_length: 0,
+      ip_ttl: 0,
+      ip_src: "0.0.0.0",
+      ip_dst: "0.0.0.0",
+      // icmp info
+      type: 0,
+      code: 0,
+      checksum: 0,
     },
   },
   {
@@ -46,6 +68,27 @@ const PACKETS_DATA: Packet[] = [
     length: 12,
     rest: {
       payload: new Uint8Array(),
+      // ipv4 info
+      ip_version: 4,
+      ip_header_length: 0,
+      ip_ttl: 0,
+      ip_src: "0.0.0.0",
+      ip_dst: "0.0.0.0",
+      ip_payload_length: 0,
+      ip_hop_limit: 0,
+      // tcp info
+      port_src: 0,
+      port_dst: 0,
+      sequence_number: 0,
+      acknowledgment_number: 0,
+      flags: {
+        URG: false,
+        ACK: false,
+        PSH: false,
+        RST: false,
+        SYN: false,
+        FIN: false,
+      },
     },
   },
   {
