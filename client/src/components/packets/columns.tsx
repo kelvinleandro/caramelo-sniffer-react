@@ -1,9 +1,9 @@
-"use client"
- 
-import { ColumnDef } from "@tanstack/react-table"
-import { ArrowUpDown } from "lucide-react"
-import { Packet } from "@/types/packets"
-import { Button } from "../ui/button"
+"use client";
+
+import { ColumnDef } from "@tanstack/react-table";
+import { ArrowUpDown } from "lucide-react";
+import { Packet } from "@/types/packets";
+import { Button } from "../ui/button";
 
 export const columns: ColumnDef<Packet>[] = [
   {
@@ -17,7 +17,7 @@ export const columns: ColumnDef<Packet>[] = [
           Number
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
-      )
+      );
     },
   },
   {
@@ -35,9 +35,12 @@ export const columns: ColumnDef<Packet>[] = [
   {
     header: "Protocol",
     accessorKey: "transport_protocol",
+    filterFn: (row, id, value) => {
+      return value.length > 0 ? value.includes(row.getValue(id)) : true;
+    },
   },
   {
     header: "Length",
     accessorKey: "length",
   },
-]
+];

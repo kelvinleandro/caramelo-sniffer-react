@@ -5,12 +5,12 @@ import { useState } from "react";
 import {
   ColumnDef,
   ColumnFiltersState,
+  Row,
   SortingState,
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
   getSortedRowModel,
-  getPaginationRowModel,
   useReactTable,
 } from "@tanstack/react-table";
 
@@ -44,6 +44,10 @@ export function DataTable<TData, TValue>({
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const [selectedProtocols, setSelectedProtocols] = useState<string[]>([]);
+  const [activePacketNumber, setActivePacketNumber] = useState<number | null>(
+    null
+  );
 
   const table = useReactTable({
     data,
@@ -52,30 +56,11 @@ export function DataTable<TData, TValue>({
     onSortingChange: setSorting,
     getSortedRowModel: getSortedRowModel(),
     onColumnFiltersChange: setColumnFilters,
-    // getPaginationRowModel: getPaginationRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     state: {
       sorting,
       columnFilters,
     },
-    filterFns: {
-      transport_protocol: (row, columnId, filterValue) => {
-        // Ensure filterValue is an array
-        if (!Array.isArray(filterValue)) {
-          return true;
-        }
-        // Check if the row's transport_protocol is included in the filterValue array
-        return filterValue.includes(row.getValue(columnId));
-      },
-    },
-    // manualPagination: true,
-    // pageCount: 1,
-    // rowCount: 5,
-    // initialState: {
-    //   pagination: {
-    //     pageSize: 5,
-    //   },
-    // },
   });
 
   const transportProtocolValues = Array.from(
@@ -83,38 +68,28 @@ export function DataTable<TData, TValue>({
   );
 
   const handleCheckboxChange = (value: string) => {
-    setColumnFilters((prevFilters) => {
-      const existingFilter = prevFilters.find(
-        (filter) => filter.id === "transport_protocol"
-      );
+    setSelectedProtocols((prev) => {
+      const newProtocols = prev.includes(value)
+        ? prev.filter((protocol) => protocol !== value)
+        : [...prev, value];
 
-      if (existingFilter) {
-        const values = existingFilter.value as string[];
-        if (values.includes(value)) {
-          return values.length === 1
-            ? prevFilters.filter((filter) => filter.id !== "transport_protocol")
-            : prevFilters.map((filter) =>
-                filter.id === "transport_protocol"
-                  ? {
-                      ...filter,
-                      value: values.filter((v: string) => v !== value),
-                    }
-                  : filter
-              );
-        } else {
-          return prevFilters.map((filter) =>
-            filter.id === "transport_protocol"
-              ? { ...filter, value: [...values, value] }
-              : filter
-          );
-        }
-      } else {
-        return [...prevFilters, { id: "transport_protocol", value: [value] }];
-      }
+      table.getColumn("transport_protocol")?.setFilterValue(newProtocols);
+      return newProtocols;
     });
   };
 
-  const transportProtocolColors: Record<string, string> = {
+  const handleRowClick = (row: Row<TData>) => {
+    setActivePacketNumber((row.original as Packet).number);
+    onRowClick(row.original as Packet);
+  };
+
+  const activeRowStyle: Record<string, string> = {
+    TCP: "bg-blue-500",
+    UDP: "bg-green-500",
+    ICMP: "bg-red-500",
+  };
+
+  const rowStyle: Record<string, string> = {
     TCP: "text-blue-500 hover:bg-blue-500 hover:text-current cursor-pointer",
     UDP: "text-green-500 hover:bg-green-500 hover:text-current cursor-pointer",
     ICMP: "text-red-500 hover:bg-red-500 hover:text-current cursor-pointer",
@@ -132,11 +107,7 @@ export function DataTable<TData, TValue>({
               <DropdownMenuCheckboxItem
                 key={value}
                 className="uppercase"
-                checked={columnFilters.some(
-                  (filter) =>
-                    filter.id === "transport_protocol" &&
-                    (filter.value as string[]).includes(value)
-                )}
+                checked={selectedProtocols.includes(value)}
                 onCheckedChange={() => handleCheckboxChange(value)}
               >
                 {value}
@@ -171,13 +142,15 @@ export function DataTable<TData, TValue>({
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
-                  className={
-                    transportProtocolColors[
-                      (row.original as Packet).transport_protocol
-                    ] ||
-                    "cursor-pointer hover:bg-gray-950 hover:dark:bg-white hover:text-white hover:dark:text-gray-950"
-                  }
-                  onClick={() => onRowClick(row.original as Packet)}
+                  className={`${
+                    (row.original as Packet).number === activePacketNumber
+                      ? activeRowStyle[(row.original as Packet).transport_protocol] || "bg-gray-950 dark:bg-white text-white dark:text-gray-950"
+                      : rowStyle[
+                          (row.original as Packet).transport_protocol
+                        ] ||
+                        "cursor-pointer hover:bg-gray-950 hover:dark:bg-white hover:text-white hover:dark:text-gray-950"
+                  }`}
+                  onClick={() => handleRowClick(row)}
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>
