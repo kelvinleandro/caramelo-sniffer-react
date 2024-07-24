@@ -199,36 +199,36 @@ export default function Home() {
     setTheme(theme === "dark" ? "light" : "dark");
   };
 
-  // const startCapture = async () => {
-  //   const response = await fetch("http://localhost:8080/start_capture");
-  //   // const data = await response.json();
-  // };
+  const startCapture = async () => {
+    const response = await fetch("http://localhost:8080/start_capture");
+  };
 
-  // const stopCapture = async () => {
-  //   const response = await fetch("http://localhost:8080/stop_capture");
-  //   // const data = await response.json();
-  // };
+  const stopCapture = async () => {
+    const response = await fetch("http://localhost:8080/stop_capture");
+  };
 
   const handleCaptureChange = async (capturing: boolean) => {
     setIsCapturing(capturing);
-    // if (!capturing) {
-    //   await stopCapture();
-    // } else {
-    //   await startCapture();
-    // }
+    if (!capturing) {
+      await stopCapture();
+    } else {
+      await startCapture();
+    }
   };
 
-  // useEffect(() => {
-  //   const fetchPackets = async () => {
-  //     const response = await fetch("http://localhost:8080/packets");
-  //     const data = await response.json();
-  //     setPackets(data.packets);
-  //   };
+  useEffect(() => {
+    const fetchPackets = async () => {
+      if(isCapturing){
+        const response = await fetch("http://localhost:8080/packets");
+        const data = await response.json();
+        setPackets(data.packets);
+      }
+    };
 
-  //   const interval = setInterval(fetchPackets, 1000);
+    const interval = setInterval(fetchPackets, 1000);
 
-  //   return () => clearInterval(interval);
-  // }, []);
+    return () => clearInterval(interval);
+  }, [isCapturing]);
 
   return (
     <div className="flex flex-col w-full min-h-screen py-6 px-8 gap-4">
