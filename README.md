@@ -1,6 +1,6 @@
 # Caramelo Sniffer
 
-This project is a packet sniffer application with a client-server architecture. The backend is built with Python for packet capturing and Flask to create the endpoints, while the frontend is developed using Next.js, TypeScript, and Shadcn UI to provide a user-friendly interface.
+This project is a packet sniffer application with a client-server architecture. The backend is built with Python for packet capturing and Flask to create the endpoints, while the frontend is developed using Next.js, TypeScript, and Shadcn UI to provide a user-friendly interface. If you're interested in a TUI version, take a look at [this repository](https://github.com/kelvinleandro/caramelo-sniffer).
 
 ## Preview
 ![preview](preview.png)
