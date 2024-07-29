@@ -23,6 +23,10 @@ export const columns: ColumnDef<Packet>[] = [
   {
     header: "Time",
     accessorKey: "timestamp",
+    cell: ({ cell }) => {
+      const value = cell.getValue<number>();
+      return value.toFixed(4);
+    },
   },
   {
     header: "MAC address src",
