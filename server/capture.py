@@ -1,6 +1,12 @@
 import socket
 import struct
 
+# !: network (big-endian) byte order
+# B: unsigned int 1 byte
+# H: unsigned short int 2 bytes
+# I/L: unsigned int 4 bytes
+# Ns: N-byte string (return bytes)
+# Nx: ignore N bytes
 
 def ethernet_frame(data: bytes) -> tuple:
     """
