@@ -1,4 +1,3 @@
-import socket
 import struct
 
 # !: network (big-endian) byte order

@@ -65,14 +65,14 @@ const PACKETS_DATA: Packet[] = [
     mac_src: "00:00:00:00:00:00",
     mac_dst: "00:00:00:00:00:00",
     transport_protocol: "TCP",
-    length: 12,
+    length: 8,
     rest: {
       payload: new Uint8Array(),
       // ipv4 info
       ip_version: 4,
       ip_header_length: 0,
       ip_ttl: 0,
-      ip_src: "0.0.0.0",
+      ip_src: "192.168.1.12",
       ip_dst: "0.0.0.0",
       ip_payload_length: 0,
       ip_hop_limit: 0,

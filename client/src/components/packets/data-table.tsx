@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
 import {
   ColumnDef,
@@ -28,7 +28,9 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Button } from "../ui/button";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+
 import { Packet } from "@/types/packets";
 import { cn } from "@/lib/utils";
 
@@ -49,9 +51,26 @@ export function DataTable<TData, TValue>({
   const [activePacketNumber, setActivePacketNumber] = useState<number | null>(
     null
   );
+  const [filterString, setFilterString] = useState("");
+
+  const applyFilter = (row: Row<TData>) => {
+    if (!filterString) return true;
+
+    try {
+      const packet = row.original as Packet;
+      const filterFunc = new Function("packet", `return ${filterString}`);
+      return filterFunc(packet);
+    } catch (error) {
+      return true;
+    }
+  };
+
+  const filteredData = useMemo(() => {
+    return data.filter((row) => applyFilter({ original: row } as Row<TData>));
+  }, [data, filterString]);
 
   const table = useReactTable({
-    data,
+    data: filteredData,
     columns,
     getCoreRowModel: getCoreRowModel(),
     onSortingChange: setSorting,
@@ -98,7 +117,14 @@ export function DataTable<TData, TValue>({
 
   return (
     <div>
-      <div className="flex items-center justify-end py-4">
+      <div className="flex items-center justify-between py-4 space-x-2">
+        <Input
+          placeholder="Enter filter (e.g., packet.transport_protocol === 'TCP')"
+          value={filterString}
+          onChange={(e) => setFilterString(e.target.value)}
+          className="flex-1"
+        />
+
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline">Transport Protocol</Button>
