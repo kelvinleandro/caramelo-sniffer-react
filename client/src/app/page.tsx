@@ -18,7 +18,7 @@ const PACKETS_DATA: Packet[] = [
     t_captured: 0,
     mac_src: "00:00:00:00:00:00",
     mac_dst: "00:00:00:00:00:00",
-    transport_protocol: "UDP",
+    protocol: "UDP",
     length: 12,
     rest: {
       payload: new Uint8Array([0x12, 0x34, 0x56, 0x78, 0x9a, 0xbc, 0xde, 0xf0, 0x12, 0x34, 0x56, 0x78, 0x9a, 0xbc, 0xde, 0xf0, 0x12, 0x34, 0x56, 0x78, 0x9a, 0xbc, 0xde, 0xf0, 0x12, 0x34, 0x56, 0x78, 0x9a, 0xbc, 0xde, 0xf0, 0x12, 0x34, 0x56, 0x78, 0x9a, 0xbc, 0xde, 0xf0, 0x12, 0x34, 0x56, 0x78, 0x9a, 0xbc, 0xde, 0xf0, 0x12, 0x34, 0x56, 0x78, 0x9a, 0xbc, 0xde, 0xf0, 0x12, 0x34, 0x56, 0x78, 0x9a, 0xbc, 0xde, 0xf0, 0x12, 0x34, 0x56, 0x78, 0x9a, 0xbc, 0xde, 0xf0, 0x12, 0x34, 0x56, 0x78, 0x9a, 0xbc, 0xde, 0xf0, 0x12, 0x34, 0x56, 0x78, 0x9a, 0xbc, 0xde, 0xf0, 0x12, 0x34, 0x56, 0x78, 0x9a, 0xbc, 0xde, 0xf0, 0x12, 0x34, 0x56, 0x78, 0x9a, 0xbc, 0xde, 0xf0, 0x12, 0x34, 0x56, 0x78, 0x9a, 0xbc, 0xde, 0xf0, 0x12, 0x34, 0x56, 0x78, 0x9a, 0xbc, 0xde, 0xf0, 0x12, 0x34, 0x56, 0x78, 0x9a, 0xbc, 0xde, 0xf0]),
@@ -42,7 +42,7 @@ const PACKETS_DATA: Packet[] = [
     t_captured: 0,
     mac_src: "00:00:00:00:00:00",
     mac_dst: "00:00:00:00:00:00",
-    transport_protocol: "ICMP",
+    protocol: "ICMP",
     length: 12,
     rest: {
       payload: new Uint8Array(),
@@ -64,7 +64,7 @@ const PACKETS_DATA: Packet[] = [
     t_captured: 0,
     mac_src: "00:00:00:00:00:00",
     mac_dst: "00:00:00:00:00:00",
-    transport_protocol: "TCP",
+    protocol: "TCP",
     length: 8,
     rest: {
       payload: new Uint8Array(),
@@ -97,7 +97,7 @@ const PACKETS_DATA: Packet[] = [
     t_captured: 0,
     mac_src: "00:00:00:00:00:00",
     mac_dst: "00:00:00:00:00:00",
-    transport_protocol: "unknown",
+    protocol: "unknown",
     length: 12,
     rest: {
       payload: new Uint8Array(),
@@ -109,7 +109,7 @@ const PACKETS_DATA: Packet[] = [
     t_captured: 0,
     mac_src: "00:00:00:00:00:00",
     mac_dst: "00:00:00:00:00:00",
-    transport_protocol: "43",
+    protocol: "43",
     length: 12,
     rest: {
       payload: new Uint8Array(),
@@ -121,7 +121,7 @@ const PACKETS_DATA: Packet[] = [
     t_captured: 0,
     mac_src: "00:00:00:00:00:00",
     mac_dst: "00:00:00:00:00:00",
-    transport_protocol: "ICMP",
+    protocol: "ICMP",
     length: 12,
     rest: {
       payload: new Uint8Array(),
@@ -133,7 +133,7 @@ const PACKETS_DATA: Packet[] = [
     t_captured: 0,
     mac_src: "00:00:00:00:00:00",
     mac_dst: "00:00:00:00:00:00",
-    transport_protocol: "unknown",
+    protocol: "unknown",
     length: 12,
     rest: {
       payload: new Uint8Array(),
@@ -145,7 +145,7 @@ const PACKETS_DATA: Packet[] = [
     t_captured: 0,
     mac_src: "00:00:00:00:00:00",
     mac_dst: "00:00:00:00:00:00",
-    transport_protocol: "UDP",
+    protocol: "UDP",
     length: 12,
     rest: {
       payload: new Uint8Array(),
@@ -157,7 +157,7 @@ const PACKETS_DATA: Packet[] = [
     t_captured: 0,
     mac_src: "00:00:00:00:00:00",
     mac_dst: "00:00:00:00:00:00",
-    transport_protocol: "TCP",
+    protocol: "TCP",
     length: 12,
     rest: {
       payload: new Uint8Array(),
@@ -169,7 +169,7 @@ const PACKETS_DATA: Packet[] = [
     t_captured: 0,
     mac_src: "00:00:00:00:00:00",
     mac_dst: "00:00:00:00:00:00",
-    transport_protocol: "TCP",
+    protocol: "TCP",
     length: 12,
     rest: {
       payload: new Uint8Array(),
@@ -181,7 +181,7 @@ const PACKETS_DATA: Packet[] = [
     t_captured: 0,
     mac_src: "00:00:00:00:00:00",
     mac_dst: "00:00:00:00:00:00",
-    transport_protocol: "ICMP",
+    protocol: "ICMP",
     length: 12,
     rest: {
       payload: new Uint8Array(),
@@ -259,7 +259,7 @@ export default function Home() {
 
       <div className="flex flex-col md:flex-row gap-4">
         <div className="w-full md:w-[70%]">
-          <DataTable columns={columns} data={packets} onRowClick={setActivePacket} />
+          <DataTable columns={columns} data={PACKETS_DATA} onRowClick={setActivePacket} />
         </div>
         <PacketDetails packet={activePacket} />
       </div>

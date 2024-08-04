@@ -84,7 +84,7 @@ export function DataTable<TData, TValue>({
   });
 
   const transportProtocolValues = Array.from(
-    new Set(data.map((item: any) => item.transport_protocol))
+    new Set(data.map((item: any) => item.protocol))
   );
 
   const handleCheckboxChange = (value: string) => {
@@ -93,7 +93,7 @@ export function DataTable<TData, TValue>({
         ? prev.filter((protocol) => protocol !== value)
         : [...prev, value];
 
-      table.getColumn("transport_protocol")?.setFilterValue(newProtocols);
+      table.getColumn("protocol")?.setFilterValue(newProtocols);
       return newProtocols;
     });
   };
@@ -119,7 +119,7 @@ export function DataTable<TData, TValue>({
     <div>
       <div className="flex items-center justify-between py-4 space-x-2">
         <Input
-          placeholder="Enter filter (e.g., packet.transport_protocol === 'TCP')"
+          placeholder="Enter filter (e.g., packet.protocol === 'TCP')"
           value={filterString}
           onChange={(e) => setFilterString(e.target.value)}
           className="flex-1"
@@ -127,7 +127,7 @@ export function DataTable<TData, TValue>({
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="outline">Transport Protocol</Button>
+            <Button variant="outline">Protocol</Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent>
             {transportProtocolValues.map((value) => (
@@ -171,11 +171,11 @@ export function DataTable<TData, TValue>({
                     key={row.id}
                     data-state={row.getIsSelected() && "selected"}
                     className={cn(
-                      rowStyle[(row.original as Packet).transport_protocol] ??
+                      rowStyle[(row.original as Packet).protocol] ??
                         "cursor-pointer hover:bg-gray-950 hover:dark:bg-white hover:text-white hover:dark:text-gray-950",
                       (row.original as Packet).number === activePacketNumber &&
                         (activeRowStyle[
-                          (row.original as Packet).transport_protocol
+                          (row.original as Packet).protocol
                         ] ??
                           "bg-gray-950 dark:bg-white text-white dark:text-gray-950")
                     )}

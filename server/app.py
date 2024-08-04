@@ -28,7 +28,7 @@ def capture_packets(sock: socket.socket):
             t = time.time()
             if raw_data:
                 mac_dst, mac_src, eth_proto, eth_data = ethernet_frame(raw_data)
-                transport_protocol = "unknown"
+                protocol_name = "unknown"
                 rest = {}
 
                 # IPv4 or IPv6
@@ -44,24 +44,24 @@ def capture_packets(sock: socket.socket):
                             {"ip_version": version, "ip_traffic_class": traffic_class, "ip_flow_label": flow_label, "ip_payload_length": payload_length, "ip_hop_limit": hop_limit, "ip_src": ip_src, "ip_dst": ip_dst})
                     
                     if protocol == 1:
-                        transport_protocol = "ICMP"
+                        protocol_name = "ICMP"
                         icmp_type, icmp_code, checksum, transport_data = icmp_packet(ip_data)
                         rest.update({"icmp_type": icmp_type, "icmp_code": icmp_code, "icmp_checksum": checksum,
                                      "payload": list(transport_data)})
                     elif protocol == 6:
-                        transport_protocol = "TCP"
+                        protocol_name = "TCP"
                         src_port, dst_port, sequence_number, acknowledgment_number, flags, transport_data = tcp_segment(
                             ip_data)
                         rest.update({"port_src": src_port, "port_dst": dst_port, "sequence_number": sequence_number,
                                      "acknowledgment_number": acknowledgment_number, "flags": flags,
                                      "payload": list(transport_data)})
                     elif protocol == 17:
-                        transport_protocol = "UDP"
+                        protocol_name = "UDP"
                         src_port, dst_port, length, transport_data = udp_segment(ip_data)
                         rest.update(
                             {"port_src": src_port, "port_dst": dst_port, "udp_length": length, "payload": list(transport_data)})
                     else:
-                        transport_protocol = f"{protocol}"
+                        protocol_name = f"{protocol}"
                         rest.update({"payload": list(ip_data)})
                 else:
                     rest.update({"payload": list(eth_data)})
@@ -72,7 +72,7 @@ def capture_packets(sock: socket.socket):
                     "t_captured": t,
                     "mac_src": mac_src,
                     "mac_dst": mac_dst,
-                    "transport_protocol": transport_protocol,
+                    "protocol": protocol_name,
                     "length": len(raw_data),
                     "rest": rest
                 }

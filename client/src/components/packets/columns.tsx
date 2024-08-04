@@ -38,7 +38,7 @@ export const columns: ColumnDef<Packet>[] = [
   },
   {
     header: "Protocol",
-    accessorKey: "transport_protocol",
+    accessorKey: "protocol",
     filterFn: (row, id, value) => {
       return value.length > 0 ? value.includes(row.getValue(id)) : true;
     },

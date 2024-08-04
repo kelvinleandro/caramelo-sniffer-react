@@ -69,7 +69,7 @@ export type Packet = {
   t_captured: number;
   mac_src: string;
   mac_dst: string;
-  transport_protocol: string;
+  protocol: string;
   length: number;
   rest: Rest;
 };
