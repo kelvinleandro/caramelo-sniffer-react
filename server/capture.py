@@ -4,7 +4,7 @@ import struct
 # !: network (big-endian) byte order
 # B: unsigned int 1 byte
 # H: unsigned short int 2 bytes
-# I/L: unsigned int 4 bytes
+# L: unsigned int 4 bytes
 # Ns: N-byte string (return bytes)
 # Nx: ignore N bytes
 
@@ -27,7 +27,7 @@ def ethernet_frame(data: bytes) -> tuple:
     is converted from network to host byte order. The remainder of the data is the payload.
     """
     dest_mac, src_mac, proto = struct.unpack('! 6s 6s H', data[:14])
-    return get_mac_addr(dest_mac), get_mac_addr(src_mac), socket.htons(proto), data[14:]
+    return get_mac_addr(dest_mac), get_mac_addr(src_mac), proto, data[14:]
 
 
 def get_mac_addr(bytes_addr: bytes) -> str:
@@ -114,7 +114,7 @@ def ipv6_packet(data: bytes) -> tuple:
     This function unpacks and interprets the IPv6 header fields and extracts
     the source and destination IP addresses.
     """
-    version_traffic_flow = struct.unpack('!I', data[:4])[0]
+    version_traffic_flow = data[:4]
     version = (version_traffic_flow >> 28) & 0xF
     traffic_class = (version_traffic_flow >> 20) & 0xFF
     flow_label = version_traffic_flow & 0xFFFFF

@@ -32,8 +32,8 @@ def capture_packets(sock: socket.socket):
                 rest = {}
 
                 # IPv4 or IPv6
-                if eth_proto in (8, 56710):
-                    if eth_proto == 8:  # IPv4
+                if eth_proto in (2048, 34525):
+                    if eth_proto == 2048:  # IPv4
                         version, header_length, ttl, protocol, ip_src, ip_dst, ip_data = ipv4_packet(eth_data)
                         rest.update(
                             {"ip_version": version, "ip_header_length": header_length, "ip_ttl": ttl, "ip_src": ip_src,
