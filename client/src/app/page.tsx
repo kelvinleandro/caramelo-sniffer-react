@@ -259,7 +259,7 @@ export default function Home() {
 
       <div className="flex flex-col md:flex-row gap-4">
         <div className="w-full md:w-[70%]">
-          <DataTable columns={columns} data={PACKETS_DATA} onRowClick={setActivePacket} />
+          <DataTable columns={columns} data={packets} onRowClick={setActivePacket} />
         </div>
         <PacketDetails packet={activePacket} />
       </div>

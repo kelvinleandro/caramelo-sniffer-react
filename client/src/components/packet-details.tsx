@@ -71,11 +71,11 @@ const PacketDetails = ({ packet }: { packet: Packet | null }) => {
         </TabsContent>
         <TabsContent value="transport">
           {rest ? (
-            packet.transport_protocol === "UDP" ? (
+            packet.protocol === "UDP" ? (
               <>
                 <p>
                   <span className="font-bold">Protocol:</span>{" "}
-                  {packet.transport_protocol}
+                  {packet.protocol}
                 </p>
                 <p>
                   <span className="font-bold">Port Source:</span>{" "}
@@ -89,11 +89,11 @@ const PacketDetails = ({ packet }: { packet: Packet | null }) => {
                   <span className="font-bold">Length:</span> {rest.udp_length}
                 </p>
               </>
-            ) : packet.transport_protocol === "TCP" ? (
+            ) : packet.protocol === "TCP" ? (
               <>
                 <p>
                   <span className="font-bold">Protocol:</span>{" "}
-                  {packet.transport_protocol}
+                  {packet.protocol}
                 </p>
                 <p>
                   <span className="font-bold">Port Source:</span>{" "}
@@ -112,11 +112,11 @@ const PacketDetails = ({ packet }: { packet: Packet | null }) => {
                   {rest.acknowledgment_number}
                 </p>
               </>
-            ) : packet.transport_protocol === "ICMP" ? (
+            ) : packet.protocol === "ICMP" ? (
               <>
                 <p>
                   <span className="font-bold">Protocol:</span>{" "}
-                  {packet.transport_protocol}
+                  {packet.protocol}
                 </p>
                 <p>
                   <span className="font-bold">ICMP Type:</span> {rest.icmp_type}
