@@ -15,7 +15,8 @@ packets = []
 capture_thread = None
 capture_running = False
 
-sock = socket.socket(socket.AF_PACKET, socket.SOCK_RAW, socket.ntohs(3))
+ETH_P_ALL = socket.ntohs(3)
+sock = socket.socket(socket.AF_PACKET, socket.SOCK_RAW, ETH_P_ALL)
 sock.bind(('enp0s3', 0))
 sock.setblocking(False)
 
