@@ -57,9 +57,9 @@ def capture_packets(sock: socket.socket):
                                      "payload": list(transport_data)})
                     elif protocol == 17:
                         protocol_name = "UDP"
-                        src_port, dst_port, length, transport_data = udp_segment(ip_data)
+                        src_port, dst_port, length, checksum, transport_data = udp_segment(ip_data)
                         rest.update(
-                            {"port_src": src_port, "port_dst": dst_port, "udp_length": length, "payload": list(transport_data)})
+                            {"port_src": src_port, "port_dst": dst_port, "udp_length": length, "udp_checksum": checksum, "payload": list(transport_data)})
                     else:
                         protocol_name = f"{protocol}"
                         rest.update({"payload": list(ip_data)})

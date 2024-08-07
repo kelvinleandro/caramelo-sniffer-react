@@ -74,8 +74,7 @@ const PacketDetails = ({ packet }: { packet: Packet | null }) => {
             packet.protocol === "UDP" ? (
               <>
                 <p>
-                  <span className="font-bold">Protocol:</span>{" "}
-                  {packet.protocol}
+                  <span className="font-bold">Protocol:</span> {packet.protocol}
                 </p>
                 <p>
                   <span className="font-bold">Port Source:</span>{" "}
@@ -88,12 +87,15 @@ const PacketDetails = ({ packet }: { packet: Packet | null }) => {
                 <p>
                   <span className="font-bold">Length:</span> {rest.udp_length}
                 </p>
+                <p>
+                  <span className="font-bold">Checksum:</span>{" "}
+                  {rest.udp_checksum}
+                </p>
               </>
             ) : packet.protocol === "TCP" ? (
               <>
                 <p>
-                  <span className="font-bold">Protocol:</span>{" "}
-                  {packet.protocol}
+                  <span className="font-bold">Protocol:</span> {packet.protocol}
                 </p>
                 <p>
                   <span className="font-bold">Port Source:</span>{" "}
@@ -115,8 +117,7 @@ const PacketDetails = ({ packet }: { packet: Packet | null }) => {
             ) : packet.protocol === "ICMP" ? (
               <>
                 <p>
-                  <span className="font-bold">Protocol:</span>{" "}
-                  {packet.protocol}
+                  <span className="font-bold">Protocol:</span> {packet.protocol}
                 </p>
                 <p>
                   <span className="font-bold">ICMP Type:</span> {rest.icmp_type}

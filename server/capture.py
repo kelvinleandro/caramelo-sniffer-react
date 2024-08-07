@@ -1,4 +1,5 @@
 import struct
+import socket
 
 # !: network (big-endian) byte order
 # B: unsigned int 1 byte
@@ -72,23 +73,7 @@ def ipv4_packet(data: bytes) -> tuple:
     version = version_header_length >> 4
     header_length = (version_header_length & 15) * 4
     ttl, proto, src, dst = struct.unpack('! 8x B B 2x 4s 4s', data[:20])
-    return version, header_length, ttl, proto, ipv4(src), ipv4(dst), data[header_length:]
-
-
-def ipv4(addr: bytes) -> str:
-    """
-    Converts a 4-byte IP address into a human-readable dotted decimal format.
-
-    Parameters:
-        addr (bytes): A 4-byte string representing the IPv4 address.
-
-    Returns:
-        str: A string representation of the IPv4 address in dotted decimal format.
-
-    Each byte of the input is mapped to a decimal number and joined by dots to format
-    the address.
-    """
-    return '.'.join(map(str, addr))
+    return version, header_length, ttl, proto, socket.inet_ntop(socket.AF_INET, src), socket.inet_ntop(socket.AF_INET, dst), data[header_length:]
 
 
 def ipv6_packet(data: bytes) -> tuple:
@@ -113,30 +98,14 @@ def ipv6_packet(data: bytes) -> tuple:
     This function unpacks and interprets the IPv6 header fields and extracts
     the source and destination IP addresses.
     """
-    version_traffic_flow = struct.unpack('!L', data[:4])[0]
+    version_traffic_flow = struct.unpack('!I', data[:4])[0]
     version = (version_traffic_flow >> 28) & 0xF
     traffic_class = (version_traffic_flow >> 20) & 0xFF
     flow_label = version_traffic_flow & 0xFFFFF
-    payload_length, next_header, hop_limit = struct.unpack('!HBB', data[4:8])
-    src = ipv6(data[8:24])
-    dst = ipv6(data[24:40])
+    payload_length, next_header, hop_limit, src, dst = struct.unpack('! H B B 16s 16s', data[4:40])
+    src = socket.inet_ntop(socket.AF_INET6, src)
+    dst = socket.inet_ntop(socket.AF_INET6, dst)
     return version, traffic_class, flow_label, payload_length, next_header, hop_limit, src, dst, data[40:]
-
-
-def ipv6(addr: bytes) -> str:
-    """
-    Converts a 16-byte IPv6 address into a human-readable format.
-
-    Parameters:
-        addr (bytes): A 16-byte string representing the IPv6 address.
-
-    Returns:
-        str: A string representation of the IPv6 address in colon-separated format.
-
-    Each 2-byte segment of the input is mapped to a hexadecimal number and joined
-    by colons to format the address.
-    """
-    return ':'.join(f'{addr[i:i+2].hex()}' for i in range(0, 16, 2))
 
 
 def icmp_packet(data: bytes) -> tuple:
@@ -226,6 +195,6 @@ def udp_segment(data: bytes) -> tuple:
     then returns the remainder of the data as the payload.
     """
     # Unpack the first 8 bytes for the UDP header
-    src_port, dest_port, size = struct.unpack('! H H 2x H', data[:8])
+    src_port, dest_port, length, checksum = struct.unpack('! H H H H', data[:8])
     # Return unpacked data and the payload
-    return src_port, dest_port, size, data[8:]
+    return src_port, dest_port, length, checksum, data[8:]
